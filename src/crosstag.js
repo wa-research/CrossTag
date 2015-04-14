@@ -82,17 +82,12 @@ var crosstag = function crosstag(list, tagsById) {
     function createOrFilter(g, selection) {
         if (g) {
             var neg = g.charAt(0) == '~';
-            // Convert selection format ({'grp':[tag1,tag2]}) into a lookup map {"tag1" :true, "tag2":true }
-            var lookup = selection[g].reduce(function(acc, el) { 
-                acc[el] = true; 
-                return acc; }, {});
+            var lookup = selection[g].length > 0 
+                // Convert selection format ({'grp':[tag1,tag2]}) into a lookup map {"tag1" :true, "tag2":true }
+                ? selection[g].reduce(function(acc, el) { acc[el] = true; return acc; }, {}) 
+                // Empty selection means 'all tags from this group'; tagsByGroup is already a lookup map
+                : tagsByGroup[neg ? g.substring(1) : g];
             // != acts as XNOR on booleans--thus modulating the outcome as hasAny or hasNone
-            // A |  B | A xnor B
-            // --+----+----------
-            // T |  T |    T
-            // T |  F |    F
-            // F |  T |    F
-            // F |  F |    T
             return function(t) { return t.hasAny(lookup) != neg; }
         }
     };

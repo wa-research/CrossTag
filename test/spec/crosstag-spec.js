@@ -1,16 +1,16 @@
 describe("Crosstag tests", function() {
     var tags = { 
-        "1":  {"id": 1 ,"title":"Tag1",  "group": "A" },
-        "2":  {"id": 2 ,"title":"Tag2",  "group": "A" },
-        "3":  {"id": 3 ,"title":"Tag3",  "group": "A" },
-        "4":  {"id": 4 ,"title":"Tag4",  "group": "A" },
-        "5":  {"id": 5 ,"title":"Tag5",  "group": "A" },
+        "1":  { "group": "A" },
+        "2":  { "group": "A" },
+        "3":  { "group": "A" },
+        "4":  { "group": "A" },
+        "5":  { "group": "A" },
 
-        "6":  {"id": 6 ,"title":"Tag6",  "group": "B" },
-        "7":  {"id": 7 ,"title":"Tag7",  "group": "B" },
-        "8":  {"id": 8 ,"title":"Tag8",  "group": "B" },
-        "9":  {"id": 9 ,"title":"Tag9",  "group": "B" },
-       "10":  {"id":10 ,"title":"Tag10", "group": "B" },
+        "6":  { "group": "B" },
+        "7":  { "group": "B" },
+        "8":  { "group": "B" },
+        "9":  { "group": "B" },
+       "10":  { "group": "B" },
     } ;
     // Tag counts:
     //
@@ -78,12 +78,16 @@ describe("Crosstag tests", function() {
             var sel = xt.applySelection({ "A":["1"], "B":["6"] });
             expect(xt.countSelected(sel)).toEqual({ 1: 1, 6: 1 });
         });
+        it("Should return all items tagged with any tag from A", function() {
+            var sel = xt.applySelection({ "A":[] });
+            expect(sel.length).toEqual(8);
+        });
 
     });
 
     describe("Inverted selection", function() {
         it("Should return five items not tagged with A", function() {
-            var sel = xt.applySelection({ "~":["1","2","3","4","5"] });
+            var sel = xt.applySelection({ "~A":[] });
             expect(sel.length).toEqual(5);
         });
         it("Should return four items not tagged with B", function() {
